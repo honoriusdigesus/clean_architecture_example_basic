@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,6 +18,13 @@ public class PersonRepositoryGateway implements PersonGateway {
 
     private final PersonRepository personRepository;
     private final PersonMapperJPA personMapperJPA;
+
+    @Override
+    public String delete(UUID id) {
+        personRepository.deleteById(id);
+        return "User deleted successfully";
+    }
+
     @Override
     public Person createPersona(Person person) {
         PersonEntity personEntity = personMapperJPA.toEntity(person);
