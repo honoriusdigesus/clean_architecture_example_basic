@@ -8,6 +8,9 @@ import io.crud.api.infrastructure.persistence.repository.PersonRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @AllArgsConstructor
 public class PersonRepositoryGateway implements PersonGateway {
@@ -19,5 +22,22 @@ public class PersonRepositoryGateway implements PersonGateway {
         PersonEntity personEntity = personMapperJPA.toEntity(person);
         PersonEntity newPerson = personRepository.save(personEntity);
         return personMapperJPA.toPerson(newPerson);
+    }
+
+    @Override
+    public Person findByName(String name) {
+        PersonEntity personEntity = personRepository.findByName(name);
+        if (personEntity == null){
+            return null;
+        }
+        return personMapperJPA.toPerson(personEntity);
+    }
+
+    @Override
+    public List<Person> getAllPersons() {
+        return personRepository.findAll()
+                .stream()
+                .map(personMapperJPA::toPerson)
+                .collect(Collectors.toList());
     }
 }
