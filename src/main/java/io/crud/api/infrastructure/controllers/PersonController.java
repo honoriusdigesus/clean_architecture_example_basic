@@ -4,6 +4,7 @@ import io.crud.api.core.entity.Person;
 import io.crud.api.core.usecases.CreatePersonUseCase;
 import io.crud.api.core.usecases.DeletePersonUseCase;
 import io.crud.api.core.usecases.GetAllPersonsUseCases;
+import io.crud.api.core.usecases.UpdatePersonUseCase;
 import io.crud.api.infrastructure.dtos.PersonDTO;
 import io.crud.api.infrastructure.mappers.PersonMapper;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class PersonController {
     private final CreatePersonUseCase createPersonUsesCase;
     private final GetAllPersonsUseCases getAllPersonsUseCases;
     private final DeletePersonUseCase deletePersonUseCase;
+    private final UpdatePersonUseCase updatePersonUseCase;
     private final PersonMapper personMapper;
 
     @PostMapping
@@ -41,4 +43,11 @@ public class PersonController {
         deletePersonUseCase.delete(id);
         return "User with ID: "+ id +" has been successfully deleted";
     }
+
+    @PutMapping
+    public String update(@RequestBody PersonDTO personDTO) {
+        updatePersonUseCase.update(personMapper.toDomain(personDTO));
+        return "User updated successfully";
+    }
+
 }

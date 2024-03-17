@@ -23,4 +23,9 @@ public class BeansConfig {
     public DeletePersonUseCase deletePersonUsesCase(PersonGateway personGateway){
         return new DeletePersonUseCaseImpl(personGateway);
     }
+
+    @Bean
+    public UpdatePersonUseCase updatePersonUseCase(PersonGateway personGateway){
+        return new UpdatePersonUseCaseImpl(personGateway);
+    }
 }

@@ -1,6 +1,7 @@
 package io.crud.api.infrastructure.gateways;
 
 import io.crud.api.core.entity.Person;
+import io.crud.api.core.exceptions.BusinessException;
 import io.crud.api.core.gateways.PersonGateway;
 import io.crud.api.infrastructure.mappers.PersonMapperJPA;
 import io.crud.api.infrastructure.persistence.PersonEntity;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -47,5 +49,19 @@ public class PersonRepositoryGateway implements PersonGateway {
                 .stream()
                 .map(personMapperJPA::toPerson)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public String update(Person person) {
+        PersonEntity personFound = personRepository.findById(person.id()).orElseThrow(()->new BusinessException("The person no found in the database"));
+        if (personFound != null) {
+            personFound.setName(person.name());
+            personFound.setEmail(person.email());
+            personFound.setPassword(person.password());
+            personFound.setTypePerson(person.typePerson());
+            personRepository.save(personFound);
+            return "User updated successfully - PersonRepositoryGateway";
+        }
+        return "User not found";
     }
 }

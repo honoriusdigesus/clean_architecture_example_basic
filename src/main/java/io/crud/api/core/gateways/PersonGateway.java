@@ -13,4 +13,6 @@ public interface PersonGateway {
     Person findByName(String name);
 
     List<Person> getAllPersons();
+
+    String update(Person person);
 }
